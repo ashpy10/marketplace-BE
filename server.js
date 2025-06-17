@@ -1,11 +1,32 @@
-import express from "express";
-import usersRouter from "./routes/users.js";
-import dotenv from "dotenv";
 
-dotenv.config();
-const app = express();
+import app from "./app.js";
+import db from "./db/client.js";
+import { seed } from "./db/seed.js";
+
+
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+// Connect to database and start server
+async function startServer() {
+  try {
+    // Connect to database
+    await db.connect();
+    console.log('Connected to database');
+    
+    // Seed the database
+    await seed();
+    console.log('Database seeded successfully');
+    
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+}
 
-app.use("/users", usersRouter);
+startServer();
+
+

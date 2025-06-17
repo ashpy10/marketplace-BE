@@ -23,6 +23,8 @@ To effectively run the project, install these packages:
 
 3. Npm install jsonwebtoken
 
+4. npm install bcrypt
+
 
 
 ---

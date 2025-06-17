@@ -1,11 +1,11 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+//import dotenv from "dotenv";
 import {createUser, getUserById, getUserByUsername} from "../db/queries/users.js";
 import { requireUser } from "../app.js";
 
-dotenv.config();
+// dotenv.config();
 const router = express.Router();
 
 //users/register

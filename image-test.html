@@ -5,7 +5,6 @@ This file is used to test the product images & make sure they are loading correc
 -->
 
 
-
 DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,14 +46,29 @@ DOCTYPE html>
             color: red;
             font-style: italic;
         }
+        .url {
+            font-size: 12px;
+            word-break: break-all;
+            color: #666;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <h1>Hot Sauce Image Test</h1>
+    <p>Testing images with cache-busting enabled. Timestamp: <span id="timestamp"></span></p>
     <div class="grid" id="sauceGrid"></div>
 
     <script>
         const cloudName = 'daw3nco1o';
+        // Add timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
         const baseUrl = `https://res.cloudinary.com/${cloudName}/image/upload/`;
         
         const sauces = [
@@ -77,7 +91,9 @@ DOCTYPE html>
             card.className = 'sauce-card';
             
             const img = document.createElement('img');
-            img.src = baseUrl + sauce.filename;
+            // Add cache-busting query parameter
+            const imageUrl = `${baseUrl}${sauce.filename}?_=${timestamp}`;
+            img.src = imageUrl;
             img.alt = sauce.title;
             
             // Add error handling to show which images fail to load
@@ -89,11 +105,25 @@ DOCTYPE html>
                 card.appendChild(error);
             };
 
+            // Add success handler to confirm image loaded
+            img.onload = function() {
+                const success = document.createElement('p');
+                success.className = 'success';
+                success.textContent = '✓ Image loaded successfully';
+                card.appendChild(success);
+            };
+
             const title = document.createElement('h3');
             title.textContent = sauce.title;
 
+            // Add URL display
+            const urlDisplay = document.createElement('p');
+            urlDisplay.className = 'url';
+            urlDisplay.textContent = `URL: ${imageUrl}`;
+
             card.appendChild(img);
             card.appendChild(title);
+            card.appendChild(urlDisplay);
             grid.appendChild(card);
         });
     </script>
