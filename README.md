@@ -19,6 +19,13 @@
 To effectively run the project, install these packages:
 1. Npm install express pg dotenv
 
+2. Npm install bcrypt
+
+3. Npm install jsonwebtoken
+
+4. npm install bcrypt
+
+
 
 ---
 # Additional Setup Notes
