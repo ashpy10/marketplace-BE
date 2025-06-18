@@ -1,5 +1,5 @@
 import db from "./client.js";
-import { products } from "./queries/products.js";
+import { products } from "./data.js";
 
 // Seed function to populate the database
 async function seed() {
@@ -8,6 +8,18 @@ async function seed() {
     await db.query(`
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS products;
+      DROP TABLE IF EXISTS users;
+    `);
+
+    // Create users table
+    await db.query(`
+      CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        is_admin BOOLEAN DEFAULT false
+      );
     `);
 
     // Create products table
@@ -28,7 +40,7 @@ async function seed() {
         user_id INTEGER NOT NULL REFERENCES users(id),
         product_id INTEGER NOT NULL REFERENCES products(id),
         rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-        comment TEXT,
+        comment TEXT
       );
     `);
 
