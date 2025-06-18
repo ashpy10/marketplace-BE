@@ -1,15 +1,13 @@
 import express from "express";
-import db from "../db/client.js";
 import { requireUser } from "./utils.js";
+import { getAllProducts, getProductById } from "../db/queries/products.js";
 
 const router = express.Router();
 
 // GET /products - Get all products
 router.get("/", async (req, res) => {
     try {
-        const { rows: products } = await db.query(`
-            SELECT * FROM products;
-        `);
+        const products = await getAllProducts();
         res.json(products);
     } catch (error) {
         console.error("Error fetching products:", error);
@@ -21,10 +19,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { rows: [product] } = await db.query(`
-            SELECT * FROM products
-            WHERE id = $1;
-        `, [id]);
+        const product = await getProductById(id);
 
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
@@ -43,10 +38,7 @@ router.get("/:id/reviews", async (req, res) => {
         const { id } = req.params;
         
         // Check if product exists
-        const { rows: [product] } = await db.query(`
-            SELECT id FROM products
-            WHERE id = $1;
-        `, [id]);
+        const product = await getProductById(id);
 
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
@@ -76,10 +68,7 @@ router.post("/:id/reviews", requireUser, async (req, res) => {
         const userId = req.user.id;
 
         // Check if product exists
-        const { rows: [product] } = await db.query(`
-            SELECT id FROM products
-            WHERE id = $1;
-        `, [id]);
+        const product = await getProductById(id);
 
         if (!product) {
             return res.status(404).json({ error: "Product not found" });
