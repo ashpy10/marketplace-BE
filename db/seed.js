@@ -4,15 +4,13 @@ import { products } from "./queries/products.js";
 // Seed function to populate the database
 async function seed() {
   try {
-    // First, drop existing tables if they exist
-    console.log("Starting to drop tables...");
+    // Drop existing tables
     await db.query(`
-      DROP TABLE IF EXISTS products CASCADE;
+      DROP TABLE IF EXISTS reviews;
+      DROP TABLE IF EXISTS products;
     `);
-    console.log("Tables dropped successfully!");
 
-    // Create new tables
-    console.log("Starting to create tables...");
+    // Create products table
     await db.query(`
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
@@ -22,20 +20,36 @@ async function seed() {
         image_url TEXT NOT NULL
       );
     `);
-    console.log("Tables created successfully!");
 
-    // Insert the products data
-    const insertProducts = products.map(
-      product => db.query(`
+    // Create reviews table
+    await db.query(`
+      CREATE TABLE reviews (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id),
+        product_id INTEGER NOT NULL REFERENCES products(id),
+        rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+        comment TEXT,
+      );
+    `);
+
+    // Insert products
+    const productValues = products.map(product => [
+      product.title,
+      product.description,
+      product.price,
+      product.image_url
+    ]);
+
+    for (const [title, description, price, image_url] of productValues) {
+      await db.query(`
         INSERT INTO products (title, description, price, image_url)
         VALUES ($1, $2, $3, $4);
-      `, [product.title, product.description, product.price, product.image_url])
-    );
+      `, [title, description, price, image_url]);
+    }
 
-    await Promise.all(insertProducts);
-    console.log("Seed data inserted successfully!");
+    console.log("Database seeded successfully!");
   } catch (error) {
-    console.error("Error seeding data:", error);
+    console.error("Error seeding database:", error);
     throw error;
   }
 }

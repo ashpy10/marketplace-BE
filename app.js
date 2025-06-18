@@ -1,13 +1,19 @@
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import express from "express"
+import cors from "cors"
 import usersRouter from "./api/users.js"
-const app = express();
+import productsRouter from "./api/products.js"
 
 dotenv.config();
 
+const app = express();
+
+app.use(cors());
 app.use(express.json());
-app.use("/users", usersRouter)
+
+app.use("/api/users", usersRouter);
+app.use("/api/products", productsRouter);
 
 export function requireUser(req, res, next) {
   const auth = req.headers.authorization;
@@ -23,7 +29,6 @@ export function requireUser(req, res, next) {
     res.status(401).send({ error: "Invalid token" });
   }
 }
-
 
 app.use((err, req, res, next) => {
   console.error(err);
