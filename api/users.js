@@ -1,12 +1,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-//import dotenv from "dotenv";
 import {createUser, getUserById, getUserByUsername} from "../db/queries/users.js";
 import { requireUser } from "../app.js";
 
-// dotenv.config();
+
 const router = express.Router();
+SALT_ROUNDS = 10;
 
 //users/register
 router.post("/register", async (req, res) => {

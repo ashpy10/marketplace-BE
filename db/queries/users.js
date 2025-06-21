@@ -9,7 +9,7 @@ export async function createUser({username, password}){
     `;
 
     const {rows: user} = await db.query(sql,[username, password]);
-    return user
+    return user[0]
 
 }
 //GET USER BY ID//
