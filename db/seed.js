@@ -1,71 +1,40 @@
 import db from "./client.js";
 import { products } from "./data.js";
+import { createUser } from "./queries/users.js";
+import { createProduct } from "./queries/products.js";
+import { addOrder } from "./queries/orders.js";
+import { createReview } from "./queries/reviews.js";
+
+await db.connect();
+await seed();
+console.log("🌱 Database seeded.");
+await db.end();
 
 // Seed function to populate the database
 async function seed() {
-  try {
-    // Drop existing tables
-    await db.query(`
-      DROP TABLE IF EXISTS reviews;
-      DROP TABLE IF EXISTS products;
-      DROP TABLE IF EXISTS users;
-    `);
 
-    // Create users table
-    await db.query(`
-      CREATE TABLE users (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(255) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        is_admin BOOLEAN DEFAULT false
-      );
-    `);
+  //Seeding a user
+  const firstUser = await createUser({username: "mark", password: "password123"});
+   
 
-    // Create products table
-    await db.query(`
-      CREATE TABLE products (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        description TEXT NOT NULL,
-        price DECIMAL(10,2) NOT NULL,
-        image_url TEXT NOT NULL
-      );
-    `);
+  // Seeding ALL products
+  
+  await Promise.all(
+    products.map(product => createProduct(product))
+  );
 
-    // Create reviews table
-    await db.query(`
-      CREATE TABLE reviews (
-        id SERIAL PRIMARY KEY,
-        user_id INTEGER NOT NULL REFERENCES users(id),
-        product_id INTEGER NOT NULL REFERENCES products(id),
-        rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-        comment TEXT
-      );
-    `);
+  // Seeding an order
 
-    // Insert products
-    const productValues = products.map(product => [
-      product.title,
-      product.description,
-      product.price,
-      product.image_url
-    ]);
+  await addOrder(new Date(), firstUser.id)
 
-    for (const [title, description, price, image_url] of productValues) {
-      await db.query(`
-        INSERT INTO products (title, description, price, image_url)
-        VALUES ($1, $2, $3, $4);
-      `, [title, description, price, image_url]);
-    }
 
-    console.log("Database seeded successfully!");
-  } catch (error) {
-    console.error("Error seeding database:", error);
-    throw error;
-  }
+  // Seeding a review
+  await createReview ({rating: 5, comment: "Spicy!", product_id: 1, user_id: firstUser.id})
+
+
+
 }
 
-export { seed };
+
 
 
