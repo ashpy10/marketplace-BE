@@ -4,13 +4,13 @@ import db from "../client.js"
 export async function getOrders(id) {
     const { rows } = await db.query(
         `SELECT * FROM orders WHERE user_id = $1 ORDER BY date DESC`,
-        [userId]
+        [id]
     );
     return rows;
 }
 
 //ADD A NEW ORDER
-export async function addOrder(date, user_id) {
+export async function addOrder(user_id, date) {
     const { rows } = await db.query(
         `INSERT INTO orders (date, user_id) VALUES ($1, $2) RETURNING *`,
         [date, user_id]
