@@ -31,7 +31,18 @@ async function seed() {
   // Seeding a review
   await createReview ({rating: 5, comment: "Spicy!", product_id: 1, user_id: firstUser.id})
 
-
+  // Seeding more reviews
+  await createReview({rating: 4, comment: "Great flavor, not too hot!", product_id: 1, user_id: firstUser.id})
+  await createReview({rating: 5, comment: "Absolutely love this sauce!", product_id: 2, user_id: firstUser.id})
+  await createReview({rating: 3, comment: "Good but could be spicier", product_id: 2, user_id: firstUser.id})
+  await createReview({rating: 5, comment: "Perfect balance of heat and flavor", product_id: 3, user_id: firstUser.id})
+  await createReview({rating: 4, comment: "Really tasty, great on tacos", product_id: 4, user_id: firstUser.id})
+  await createReview({rating: 5, comment: "This is my new favorite!", product_id: 5, user_id: firstUser.id})
+  await createReview({rating: 4, comment: "Excellent quality sauce", product_id: 6, user_id: firstUser.id})
+  await createReview({rating: 3, comment: "Decent heat level", product_id: 7, user_id: firstUser.id})
+  await createReview({rating: 5, comment: "Amazing flavor profile", product_id: 8, user_id: firstUser.id})
+  await createReview({rating: 4, comment: "Great for cooking", product_id: 9, user_id: firstUser.id})
+  await createReview({rating: 5, comment: "Highly recommend!", product_id: 10, user_id: firstUser.id})
 
 }
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { requireUser } from "./utils.js";
+import { requireUser } from "../app.js";
 import { getAllProducts, getProductById } from "../db/queries/products.js";
 
 const router = express.Router();

@@ -6,7 +6,7 @@ import { requireUser } from "../app.js";
 
 
 const router = express.Router();
-SALT_ROUNDS = 10;
+const SALT_ROUNDS = 10;
 
 //users/register
 router.post("/register", async (req, res) => {

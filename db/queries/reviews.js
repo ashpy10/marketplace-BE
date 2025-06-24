@@ -11,3 +11,13 @@ export async function createReview({ rating, comment, product_id, user_id }) {
   const { rows } = await db.query(sql, [rating, comment, product_id, user_id]);
   return rows[0];
 }
+
+//GET ALL REVIEWS//
+
+export async function getAllReviews() {
+  const sql = `
+    SELECT * FROM reviews;
+  `;
+  const { rows } = await db.query(sql);
+  return rows;
+}

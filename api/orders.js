@@ -1,6 +1,6 @@
 import express from "express";
-import { requireUser } from "../app";
-import { addOrder, getOrderById, getOrders } from "../db/queries/orders";
+import { requireUser } from "../app.js";
+import { addOrder, getOrderById, getOrders } from "../db/queries/orders.js";
 
 const router = express.Router();
 
