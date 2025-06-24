@@ -4,6 +4,7 @@ import express from "express"
 import cors from "cors"
 import usersRouter from "./api/users.js"
 import productsRouter from "./api/products.js"
+import ordersRouter from "./api/orders.js"
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);
+app.use("/api/orders", ordersRouter);
 
 export function requireUser(req, res, next) {
   const auth = req.headers.authorization;
