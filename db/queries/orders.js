@@ -10,10 +10,10 @@ export async function getOrders(id) {
 }
 
 //ADD A NEW ORDER
-export async function addOrder(note, user_id, date) {
+export async function addOrder(note, id, date) {
     const { rows } = await db.query(
-        `INSERT INTO orders (note, user_id, date) VALUES ($1, $2, $3) RETURNING *`,
-        [note, user_id, date]
+        `INSERT INTO orders (note, id, date) VALUES ($1, $2, $3) RETURNING *`,
+        [note, id, date]
     );
     return rows[0];
 }
