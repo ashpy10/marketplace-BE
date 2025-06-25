@@ -4,6 +4,7 @@ import { createUser } from "./queries/users.js";
 import { createProduct } from "./queries/products.js";
 import { addOrder } from "./queries/orders.js";
 import { createReview } from "./queries/reviews.js";
+import bcrypt from "bcrypt"
 
 await db.connect();
 await seed();
@@ -12,9 +13,12 @@ await db.end();
 
 // Seed function to populate the database
 async function seed() {
+  
+  const plainPassword = "password123";
+const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
   //Seeding a user
-  const firstUser = await createUser({username: "mark", password: "password123"});
+  const firstUser = await createUser({username: "mark", password: hashedPassword});
    
 
   // Seeding ALL products
@@ -25,7 +29,7 @@ async function seed() {
 
   // Seeding an order
 
-  await addOrder(new Date(), firstUser.id)
+  await addOrder(firstUser.id, new Date())
 
 
   // Seeding a review
