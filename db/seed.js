@@ -28,8 +28,8 @@ const hashedPassword = await bcrypt.hash(plainPassword, 10);
   );
 
   // Seeding an order
-
-  await addOrder(firstUser.id, new Date())
+  const note = "2 Ghosted Again, 1 Hipster Tears, 3 Burnout Culture";
+  await addOrder(note, firstUser.id, new Date());
 
 
   // Seeding a review
