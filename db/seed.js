@@ -24,8 +24,8 @@ async function seed() {
   );
 
   // Seeding an order
-
-  await addOrder(new Date(), firstUser.id)
+  const note = "2 Ghosted Again, 1 Hipster Tears, 3 Burnout Culture";
+  await addOrder(note, firstUser.id, new Date());
 
 
   // Seeding a review
