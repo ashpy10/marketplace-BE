@@ -5,7 +5,10 @@ import cors from "cors";
 import usersRouter from "./api/users.js";
 import productsRouter from "./api/products.js";
 import reviewsRouter from "./api/reviews.js";
+console.log("📦 reviewsRouter imported:", typeof reviewsRouter);
 import ordersRouter from "./api/orders.js";
+
+console.log("✅ Loaded app.js");
 
 dotenv.config();
 
@@ -13,6 +16,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/api/direct-test", (req, res) => {
+  console.log("✅ Direct route in app.js hit");
+  res.send("✅ This worked directly from app.js");
+});
 
 app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);

@@ -25,7 +25,8 @@ async function seed() {
 
   // Seeding an order
 
-  await addOrder(new Date(), firstUser.id)
+  await addOrder(firstUser.id, new Date())
+
 
 
   // Seeding a review
