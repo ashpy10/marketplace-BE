@@ -26,7 +26,7 @@ export async function getUserById(id){
 
 //GET USER BY USERNAME **for log in??**
 export async function getUserByUsername(username) {
-  const { rows } = await client.query(
+  const { rows } = await db.query(
     `SELECT * FROM users WHERE username = $1;`,
     [username]
   );

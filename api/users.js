@@ -31,10 +31,10 @@ router.post("/login", async (req, res) => {
   if (!username || !password) return res.status(400).send({ error: "Username and password required" });
 
   const user = await getUserByUsername(username);
-  if (!user) return res.status(401).send({ error: "Invalid credentials" });
+  if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
   const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(401).send({ error: "Invalid credentials" });
+  if (!valid) return res.status(401).json({ error: "Invalid credentials" });
 
   const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
   res.send({ token });
