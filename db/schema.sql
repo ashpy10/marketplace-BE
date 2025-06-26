@@ -33,6 +33,5 @@ CREATE TABLE reviews (
     rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
     comment TEXT,
     product_id INTEGER NOT NULL REFERENCES products(id),
-    user_id INTEGER NOT NULL REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
