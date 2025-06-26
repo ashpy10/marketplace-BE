@@ -24,7 +24,8 @@ CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     date DATE NOT NULL,
     note TEXT,
-    user_id INTEGER NOT NULL REFERENCES users(id)
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    product_id INTEGER NOT NULL REFERENCES products(id)
 );
 
 -- Reviews table

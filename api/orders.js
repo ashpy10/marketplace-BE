@@ -18,18 +18,23 @@ router.get("/", async (req, res) => {
 });
 
 //POST /orders
-router.post("/", async (req,res) => {
-    const { date } = req.body;
+router.post("/", async (req, res) => {
+  const { date, product_id, note } = req.body;
 
-    if (!date || typeof date !== "string") {
-        return res.status(400).send("Please provide a date")
-    }
-    try {
-        const newOrder = await addOrder(req.user.id, date);
-        res.status(201).send(newOrder);
-    } catch (err) {
-        res.status(500).send({ error: "Failed to add order" });
-    }
+  if (!date || typeof date !== "string") {
+    return res.status(400).send("Please provide a valid date");
+  }
+  if (!product_id) {
+    return res.status(400).send("Missing product_id");
+  }
+
+  try {
+    const newOrder = await addOrder(req.user.id, product_id, date, note || "");
+    res.status(201).send(newOrder);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "Failed to add order" });
+  }
 });
 
 //GET /orders/:id

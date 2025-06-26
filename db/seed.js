@@ -27,8 +27,8 @@ async function seed() {
   await Promise.all(products.map((product) => createProduct(product)));
 
   // Seeding an order
-  const note = "2 Ghosted Again, 1 Hipster Tears, 3 Burnout Culture";
-  await addOrder(firstUser.id, new Date(), note);
+  const note = "First ever order";
+  await addOrder(firstUser.id, 2, new Date(), note);
 
   // Seeding a review
   await createReview({
