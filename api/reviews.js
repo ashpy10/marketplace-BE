@@ -8,13 +8,13 @@ const router = express.Router();
 
 // 🔧 Test route to confirm router is mounted
 router.get("/test", (req, res) => {
-  console.log("✅ /api/test route hit");
+  console.log("✅ /api/reviews/test route hit");
   res.send("✅ Reviews router is mounted and working");
 });
 
-// GET /api/products/:id/reviews
-router.get("/products/:id/reviews", async (req, res, next) => {
-  console.log("📥 Incoming request to /products/:id/reviews");
+// GET /api/reviews/products/:id
+router.get("/products/:id", async (req, res, next) => {
+  console.log("📥 Incoming request to /reviews/products/:id");
   console.log("req.params:", req.params);
 
   const { id } = req.params;
@@ -27,14 +27,14 @@ router.get("/products/:id/reviews", async (req, res, next) => {
     console.log("✅ Reviews fetched:", rows.length);
     res.send(rows);
   } catch (err) {
-    console.error("💥 ERROR in GET /products/:id/reviews:", err.message);
+    console.error("💥 ERROR in GET /reviews/products/:id:", err.message);
     console.error(err.stack);
     res.status(500).send({ error: "Internal server error" });
   }
 });
 
-// POST /api/products/:id/reviews
-router.post("/products/:id/reviews", requireUser, async (req, res, next) => {
+// POST /api/reviews/products/:id
+router.post("/products/:id", requireUser, async (req, res, next) => {
   const { id } = req.params;
   const { rating, comment } = req.body;
 
@@ -55,7 +55,7 @@ router.post("/products/:id/reviews", requireUser, async (req, res, next) => {
     console.log("✅ Review added:", newReview);
     res.status(201).send(newReview);
   } catch (err) {
-    console.error("💥 ERROR in POST /products/:id/reviews:", err.message);
+    console.error("💥 ERROR in POST /reviews/products/:id:", err.message);
     res.status(500).send({ error: "Internal server error" });
   }
 });

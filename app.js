@@ -24,7 +24,7 @@ app.get("/api/direct-test", (req, res) => {
 
 app.use("/api/users", usersRouter);
 app.use("/api/products", productsRouter);
-app.use("/api", reviewsRouter);
+app.use("/api/reviews", reviewsRouter);
 app.use("/api/orders", ordersRouter);
 
 export function requireUser(req, res, next) {
