@@ -32,7 +32,14 @@ router.post("/", async (req, res) => {
     const newOrder = await addOrder(req.user.id, product_id, date, note || "");
     res.status(201).send(newOrder);
   } catch (err) {
-    console.error(err);
+    console.error("Error in POST /orders:", {
+      message: err.message,
+      stack: err.stack,
+      user_id: req.user?.id,
+      product_id,
+      date,
+      note,
+    });
     res.status(500).send({ error: "Failed to add order" });
   }
 });
