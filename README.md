@@ -30,3 +30,4 @@ To effectively run the project, install these packages:
 ---
 # Additional Setup Notes
 1. Database is "market"
+2. Remember to chance username and passowrd in .env DATABASE_URL

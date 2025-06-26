@@ -1,13 +1,31 @@
-import jwt from "jsonwebtoken"
-import dotenv from "dotenv"
-import express from "express"
-import usersRouter from "./api/users.js"
-const app = express();
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import usersRouter from "./api/users.js";
+import productsRouter from "./api/products.js";
+import reviewsRouter from "./api/reviews.js";
+console.log("📦 reviewsRouter imported:", typeof reviewsRouter);
+import ordersRouter from "./api/orders.js";
+
+console.log("✅ Loaded app.js");
 
 dotenv.config();
 
+const app = express();
+
+app.use(cors());
 app.use(express.json());
-app.use("/users", usersRouter)
+
+app.get("/api/direct-test", (req, res) => {
+  console.log("✅ Direct route in app.js hit");
+  res.send("✅ This worked directly from app.js");
+});
+
+app.use("/api/users", usersRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/reviews", reviewsRouter);
+app.use("/api/orders", ordersRouter);
 
 export function requireUser(req, res, next) {
   const auth = req.headers.authorization;
@@ -24,13 +42,9 @@ export function requireUser(req, res, next) {
   }
 }
 
-
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).send("Sorry! Something went wrong.");
+  res.status(500).json({ error: "Sorry! Something went wrong." });
 });
 
 export default app;
-
-
-

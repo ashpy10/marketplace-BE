@@ -1,12 +1,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-//import dotenv from "dotenv";
 import {createUser, getUserById, getUserByUsername} from "../db/queries/users.js";
 import { requireUser } from "../app.js";
 
-// dotenv.config();
+
 const router = express.Router();
+const SALT_ROUNDS = 10;
 
 //users/register
 router.post("/register", async (req, res) => {
@@ -31,10 +31,10 @@ router.post("/login", async (req, res) => {
   if (!username || !password) return res.status(400).send({ error: "Username and password required" });
 
   const user = await getUserByUsername(username);
-  if (!user) return res.status(401).send({ error: "Invalid credentials" });
+  if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
   const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(401).send({ error: "Invalid credentials" });
+  if (!valid) return res.status(401).json({ error: "Invalid credentials" });
 
   const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
   res.send({ token });
