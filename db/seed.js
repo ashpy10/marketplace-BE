@@ -6,6 +6,7 @@ import { addOrder } from "./queries/orders.js";
 import { createReview } from "./queries/reviews.js";
 import bcrypt from "bcrypt";
 
+
 await db.connect();
 await seed();
 console.log("🌱 Database seeded.");
@@ -23,12 +24,11 @@ async function seed() {
   });
 
   // Seeding ALL products
-
   await Promise.all(products.map((product) => createProduct(product)));
 
   // Seeding an order
-
-  await addOrder(firstUser.id, new Date());
+  const note = "2 Ghosted Again, 1 Hipster Tears, 3 Burnout Culture";
+  await addOrder(note, firstUser.id, new Date());
 
   // Seeding a review
   await createReview({
